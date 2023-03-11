@@ -1,4 +1,4 @@
-# react-pizza-pet-project
+# Online pizzaaa ordering app
 
 Technologies
 
