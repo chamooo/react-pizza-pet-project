@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {act} from "react-dom/test-utils";
 
 const initialState = {
     categoryId: 0,
@@ -24,8 +25,13 @@ const filterSlice = createSlice({
         setCurrentPage(state, action) {
             state.currentPage = action.payload;
         },
+        setFilters(state, action) {
+            state.sort = action.payload.sort;
+            state.categoryId = Number(action.payload.categoryId);
+            state.currentPage = Number(action.payload.currentPage);
+        },
     }
 });
 
-export const {setCategoryId, setSort, setCurrentPage} = filterSlice.actions; // витягуємо методи з reducers
+export const {setCategoryId, setSort, setCurrentPage, setFilters} = filterSlice.actions; // витягуємо методи з reducers
 export default filterSlice.reducer;
