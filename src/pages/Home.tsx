@@ -15,7 +15,7 @@ const Home = ({searchValue}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isSearch = useRef(false);
-    const isMounted = useRef(false);
+    const isFirstRender = useRef(true);
 
     const categoryId = useSelector(state => state.filter.categoryId);
     const sortType = useSelector(state => state.filter.sort);
@@ -38,7 +38,10 @@ const Home = ({searchValue}) => {
             .catch((err) => alert('Error when fetching data'))
             .finally(() => setIsLoading(false))
 
-        if (isMounted.current) {
+    }
+
+    useEffect(() => {
+        if (!isFirstRender.current) {
             const queryString = qs.stringify({
                 property: sortType.property,
                 order: sortType.order,
@@ -47,10 +50,10 @@ const Home = ({searchValue}) => {
             })
             navigate(`?${queryString}`);
         }
-        isMounted.current = true;
+        isFirstRender.current = false;
+    }, [categoryId, sortType, searchValue, currentPage])
 
-    }
-
+    // якщо був перший рендер, то перевіряємо URL параметри та зберігаємо їх в Redux
     useEffect(() => {
         if(window.location.search) {
             const params = qs.parse(window.location.search.substring(1));
@@ -68,6 +71,8 @@ const Home = ({searchValue}) => {
         }
         isSearch.current = false;
     }, [categoryId, sortType, searchValue, currentPage]);
+
+
     window.scrollTo(0, 0);
 
     const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
