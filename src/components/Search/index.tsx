@@ -25,7 +25,6 @@ const Search = () => {
         updateSearchValue(event.target.value)
     };
 
-
     return (
         <div className={styles.root}>
             <input
